@@ -43,7 +43,7 @@ results/                  # results.json + figures
 
 ## Run it
 
-```bash
+```console
 pip install torch transformers accelerate safetensors
 python bench.py --model Qwen/Qwen3-0.6B --tag original
 python bench.py --model Qwen/Qwen3-0.6B --4bit --tag nf4
