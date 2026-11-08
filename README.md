@@ -31,15 +31,25 @@ of that line.
  | frozen LLM + 66K-param routed neurons | ppl 11.8→1.0, router α flips per domain | hypernetwork-style dynamic weights work |
 
 ## Repo layout
-bench.py                  # one results row per artifact: wikitext ppl, needle@ctx, tok/s, VRAM, disk
-build_model.py            # random model from (config, seed)
-merge.py                  # soups + layer-range splices
-upcycle_moe.py            # dense -> MoE, expert0 = dense MLP
-distill_router.py         # KL-distill the 2 MB router from the dense teacher
-save_vq.py / load_vq.py   # weights <-> VQ codes + int8 residuals artifact
-compressive_memory.py     # long context -> VQ triggers + entity retrieval
-figures.py                # plots from results.json
-results/                  # results.json + figures
+weight-space-lab/
+├── README.md                 # the blog post / project overview
+├── requirements.txt          # torch, transformers, accelerate, safetensors, ...
+├── bench.py                  # one results row per artifact: wikitext ppl, needle@ctx, tok/s, VRAM, disk
+├── build_model.py            # random model from (config, seed) + fingerprint
+├── inspect_init.py           # verify init stats (std 0.02, norms 1.0, tied lm_head)
+├── merge.py                  # soups + layer-range splices (base/instruct)
+├── upcycle_moe.py            # dense 0.6B -> MoE 4.82B, expert0 = dense MLP
+├── distill_router.py         # KL-distill the 2 MB router from the dense teacher
+├── save_vq.py                # weights -> VQ codes + int8 residuals artifact
+├── load_vq.py                # artifact -> runnable HF checkpoint
+├── compressive_memory.py     # long context -> VQ triggers + entity retrieval
+├── ean_neurons.py            # frozen LLM + routed low-rank neurons (optional)
+├── figures.py                # plots from results.json
+├── configs/
+│   └── qwen3_06b.py          # exact 0.6B config as data
+└── results/
+├── results.json          # every bench.py row, appended automatically
+└── figs/                 # knee.png, router_alpha.png, context_curve.png, storage.png, vram.png
 
 ## Run it
 
